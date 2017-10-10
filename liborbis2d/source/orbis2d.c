@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <sys/param.h>
 #include <kernel.h>
-#include <types/event.h>
-
 
 #include <gnmdriver.h>
 #include <systemservice.h>
@@ -12,10 +10,20 @@
 
 #include "orbis2d.h"
 #include "logdebug.h"
+#include "font.h"
 
 Orbis2dConfig *orbconf=NULL;
 int orbis2d_external_conf=-1;
 int64_t flipArgCounter=0; 
+uint32_t font_color=0x80000000;
+uint32_t backfont_color=0x80FFFFFF;
+
+uint32_t orbis2dGetRGB(int r, int g, int b) {
+	r=r%256;
+	g=g%256;
+	b=b%256;
+	return 0x80000000|r<<16|g<<8|b;
+}
 
 void orbis2dFinish()
 {
@@ -76,6 +84,7 @@ int orbis2dCreateConf()
 	//something weird happened
 	return -1;			
 }
+
 int orbis2dSetConf(Orbis2dConfig *conf)
 {
 	if(conf)
@@ -126,7 +135,7 @@ int orbis2dWaitFlipArg(SceKernelEqueue *flipQueue)
 			ret=sceKernelWaitEqueue(*flipQueue, &event, 1, &event_out, 0);
 			if(ret>=0)
 			{
-				//sys_log("liborbis2d sceKernelWaitEqueue return %d\n",ret);
+				sys_log("liborbis2d sceKernelWaitEqueue return %d\n",ret);
 				
 			}
 			else
@@ -175,6 +184,36 @@ void orbis2dDrawPixelColor(int x, int y, uint32_t pixelColor)
 	((uint32_t *)orbconf->surfaceAddr[orbconf->currentBuffer])[pixel]=color;
 
 }
+
+void orbis2dSetFontColor(uint32_t color) {
+	font_color = color;
+}
+
+void orbis2dSetBackFontColor(uint32_t color) {
+	backfont_color = color;
+}
+
+void orbis2dDrawCharacter(int character, int x, int y) {
+    for (int yy = 0; yy < 10; yy++) {
+        uint8_t charPos = font[character * 10 + yy];
+        int off = 8;
+        for (int xx = 0; xx < 8; xx++) {           // font color : background color
+			uint32_t clr = ((charPos >> xx) & 1) ? font_color : backfont_color;  // 0x00000000
+			orbis2dDrawPixelColor(x + off, y + yy, clr);
+			off--;
+        }
+    }
+}
+
+void orbis2dSetBackgroundColor(uint32_t color) {
+	orbconf->bgColor = color;
+}
+
+void orbis2dDrawString(int x, int y, const char *str){
+    for (size_t i = 0; i < strlen(str); i++)
+        orbis2dDrawCharacter(str[i], x + i * 8, y);
+}
+
 void orbis2dDrawRectColor(int x, int w, int y, int h, uint32_t color)
 {
 	int x0, y0;
@@ -311,6 +350,7 @@ int orbis2dInitVideoHandle()
 	}		
 	return handle;
 }
+
 int orbis2dInit()
 {
 	int ret;
@@ -318,7 +358,7 @@ int orbis2dInit()
 
 	if(orbis2dCreateConf()==1)
 	{
-			return orbconf->orbis2d_initialized;
+		return orbconf->orbis2d_initialized;
 	}
 	if (orbconf->orbis2d_initialized==1) 
 	{

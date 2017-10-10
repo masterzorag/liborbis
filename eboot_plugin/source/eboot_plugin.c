@@ -134,8 +134,11 @@ int main(uint64_t stackbase, uint64_t othervalue)
 				//wait for current display buffer
 				orbis2dStartDrawing();
 
-				// clear with background (default white) to the current display buffer 
+				//clear with background (default white) to the current display buffer 
 				orbis2dClearBuffer();
+
+				//writing example string
+				orbis2dDrawString(10, 10 "Example string !");
 				
 				//default red is here press X to random color
 				orbis2dDrawRectColor(x,w,y,h,color);
