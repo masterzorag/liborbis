@@ -16,9 +16,6 @@
 #define ATTR_WIDTH 1280 
 #define ATTR_HEIGHT 720
 
-
-
-
 typedef struct Orbis2dConfig
 {
 	uint32_t bgColor;
@@ -41,8 +38,7 @@ typedef struct Orbis2dConfig
 	int videoHandle;
 	int currentBuffer;
 	int orbis2d_initialized;
-	
-}Orbis2dConfig;
+} Orbis2dConfig;
 
 int orbis2dInit();
 void orbis2dFinish();

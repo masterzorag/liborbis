@@ -12,11 +12,11 @@
 #include "logdebug.h"
 #include "font.h"
 
-Orbis2dConfig *orbconf=NULL;
-int orbis2d_external_conf=-1;
-int64_t flipArgCounter=0; 
-uint32_t font_color=0x80000000;
-uint32_t backfont_color=0x80FFFFFF;
+Orbis2dConfig *orbconf = NULL;
+int orbis2d_external_conf = -1;
+int64_t flipArgCounter = 0;
+uint32_t font_color = 0x80000000;
+uint32_t backfont_color = 0x80FFFFFF;
 
 uint32_t orbis2dGetRGB(int r, int g, int b) {
 	r=r%256;
@@ -28,12 +28,12 @@ uint32_t orbis2dGetRGB(int r, int g, int b) {
 void orbis2dFinish()
 {
 	int ret;
-	if(orbis2d_external_conf!=1)
+	if(orbis2d_external_conf != 1)
 	{
-		if(orbconf->orbis2d_initialized==1)
-		{		
-			ret=sceVideoOutClose(orbconf->videoHandle);
-		
+		if(orbconf->orbis2d_initialized == 1)
+		{
+			ret = sceVideoOutClose(orbconf->videoHandle);
+
 			sys_log("liborbis2d sceVideoOutClose return 0x%8x\n",ret);
 		}
 		orbconf->orbis2d_initialized=-1;
@@ -82,7 +82,7 @@ int orbis2dCreateConf()
 		return orbconf->orbis2d_initialized;
 	}
 	//something weird happened
-	return -1;			
+	return -1;
 }
 
 int orbis2dSetConf(Orbis2dConfig *conf)
@@ -150,66 +150,62 @@ int orbis2dWaitFlipArg(SceKernelEqueue *flipQueue)
 		}
 
 	}
-
-
 	return 0;
-
 }
+
 void orbis2dFinishDrawing(int64_t flipArg)
 {
-	int ret;
+    sceGnmFlushGarlic();
 
-	sceGnmFlushGarlic();
-		
-	// request flip to the buffer
-	ret=sceVideoOutSubmitFlip(orbconf->videoHandle, orbconf->currentBuffer, orbconf->flipMode, flipArg);
-	
-	orbconf->flipArgLog[orbconf->currentBuffer]=flipArg;
+    // request flip to the buffer
+    int ret = sceVideoOutSubmitFlip(orbconf->videoHandle, orbconf->currentBuffer, orbconf->flipMode, flipArg);
 
+    orbconf->flipArgLog[orbconf->currentBuffer]=flipArg;
 }
+
 void orbis2dStartDrawing()
 {
-
-	orbis2dWaitFlipArg(&orbconf->flipQueue);
-
+    orbis2dWaitFlipArg(&orbconf->flipQueue);
 }
+
 void orbis2dDrawPixelColor(int x, int y, uint32_t pixelColor)
 {
-	int color;
-	int pixel = (y * orbconf->pitch) + x;
+    int pixel = (y * orbconf->pitch) + x;
+    int color = pixelColor;
 
-	color=pixelColor;
-
-	
-	((uint32_t *)orbconf->surfaceAddr[orbconf->currentBuffer])[pixel]=color;
-
+    ((uint32_t *)orbconf->surfaceAddr[orbconf->currentBuffer])[pixel]=color;
 }
 
 void orbis2dSetFontColor(uint32_t color) {
-	font_color = color;
+    font_color = color;
 }
 
 void orbis2dSetBackFontColor(uint32_t color) {
-	backfont_color = color;
+    backfont_color = color;
 }
 
-void orbis2dDrawCharacter(int character, int x, int y) {
-    for (int yy = 0; yy < 10; yy++) {
+void orbis2dDrawCharacter(int character, int x, int y)
+{
+    for (int yy = 0; yy < 10; yy++)
+    {
         uint8_t charPos = font[character * 10 + yy];
         int off = 8;
-        for (int xx = 0; xx < 8; xx++) {           // font color : background color
-			uint32_t clr = ((charPos >> xx) & 1) ? font_color : backfont_color;  // 0x00000000
-			orbis2dDrawPixelColor(x + off, y + yy, clr);
-			off--;
+        for (int xx = 0; xx < 8; xx++)
+        {           // font color : background color
+            uint32_t clr = ((charPos >> xx) & 1) ? font_color : backfont_color;  // 0x00000000
+            orbis2dDrawPixelColor(x + off, y + yy, clr);
+            off--;
         }
     }
 }
 
-void orbis2dSetBackgroundColor(uint32_t color) {
-	orbconf->bgColor = color;
+void orbis2dSetBackgroundColor(uint32_t color)
+{
+    orbconf->bgColor = color;
 }
 
-void orbis2dDrawString(int x, int y, const char *str){
+void orbis2dDrawString(int x, int y, const char *str)
+{
     for (size_t i = 0; i < strlen(str); i++)
         orbis2dDrawCharacter(str[i], x + i * 8, y);
 }
@@ -225,16 +221,18 @@ void orbis2dDrawRectColor(int x, int w, int y, int h, uint32_t color)
 		}
 	}
 }
+
 void orbis2dClearBuffer()
 {
 	orbis2dDrawRectColor(0, orbconf->width, 0, orbconf->height, orbconf->bgColor);
 }
+
 void orbis2dSwapBuffers()
 {
 	orbconf->currentBuffer=(orbconf->currentBuffer+1)%ORBIS2D_DISPLAY_BUFFER_NUM;
 	//sys_log("liborbis2d currentBuffer  %d\n",orbconf->currentBuffer);
-	
 }
+
 void *orbis2dMalloc(int size)
 {
 	uint64_t offset=orbconf->videoMemStackAddr;
@@ -249,6 +247,7 @@ void *orbis2dMalloc(int size)
 	
 	return (void *)(offset);
 }
+
 void orbis2dAllocDisplayBuffer(int displayBufNum)
 {
 	int i;
@@ -262,6 +261,7 @@ void orbis2dAllocDisplayBuffer(int displayBufNum)
 	}
 	sys_log("liborbis2d orbis2dAllocDisplayBuffer done\n");
 }
+
 int orbis2dInitDisplayBuffer(int num, int bufIndexStart)
 {
 	SceVideoOutBufferAttribute attr;
@@ -276,6 +276,7 @@ int orbis2dInitDisplayBuffer(int num, int bufIndexStart)
 
 	return ret;
 }
+
 int orbis2dInitMemory()
 {
 	int ret;
@@ -300,8 +301,8 @@ int orbis2dInitMemory()
 		}
 	}
 	return ret;
-
 }
+
 int orbis2dInitVideoHandle()
 {
 	int handle;
@@ -312,7 +313,6 @@ int orbis2dInitVideoHandle()
 	if(handle<0)
 	{
 		sys_log("liborbis2d sceVideoOutOpen return error 0x%8x\n",handle);
-
 	}
 	else
 	{
@@ -399,13 +399,8 @@ int orbis2dInit()
 			
 			ret=sceVideoOutSetFlipRate(orbconf->videoHandle,ORBIS2D_FLIP_RATE);
 		}
-		
-		
-		
 		orbconf->orbis2d_initialized=1;
 		sys_log("liborbis2d initialized\n");
-		
 	}
 	return orbconf->orbis2d_initialized;
 }
-
