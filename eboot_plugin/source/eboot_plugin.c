@@ -7,12 +7,13 @@
 #include <orbis2d.h>
 #include <orbisPad.h>
 
-int x=1280/2;
-int y=720/2;
-int w=1280/64;
-int h=1280/64;
-int step=10;
+#include "starfield.h"
 
+int x = 1280/2;
+int y = 720/2;
+int w = 1280/64;
+int h = 1280/64;
+int step = 10;
 
 int64_t flipArg=0;
 int R,G,B;
@@ -110,6 +111,9 @@ int main(uint64_t stackbase, uint64_t othervalue)
 	
 	//hide playroom splash
 	sceSystemServiceHideSplashScreen();
+
+	init_once(/* stars */);
+
 	//init pad
 	ret=orbisPadInit();
 	
@@ -136,6 +140,9 @@ int main(uint64_t stackbase, uint64_t othervalue)
 
 				//clear with background (default white) to the current display buffer 
 				orbis2dClearBuffer();
+
+				// draw stars
+				move_star();
 
 				//writing example string
 				orbis2dDrawString(10, 10, "Example string !");
