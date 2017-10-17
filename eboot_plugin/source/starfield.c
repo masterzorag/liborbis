@@ -68,6 +68,6 @@ void move_star(/* we don't pass the framebuffer */)
         }
 
         /* draw to screen via liborbis2d */
-        orbis2dDrawPixelColor(tx, ty, stars[i].color);
+        orbis2dDrawPixelColor(tx, ty, 0x80FFFFFF);
     }
 }
