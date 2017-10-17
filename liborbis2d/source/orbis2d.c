@@ -154,7 +154,10 @@ void orbis2dFinishDrawing(int64_t flipArg)
 		
 	// request flip to the buffer
 	ret=sceVideoOutSubmitFlip(orbconf->videoHandle, orbconf->currentBuffer, orbconf->flipMode, flipArg);
-	
+	if(ret)
+	{
+		sys_log("liborbis2d sceVideoOutSubmitFlip return error 0x%8x\n",ret);
+	}
 	orbconf->flipArgLog[orbconf->currentBuffer]=flipArg;
 
 }
