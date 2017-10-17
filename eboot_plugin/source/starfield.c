@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <orbis2d.h>
+#include <logdebug.h>
 
 #include "starfield.h"
 
@@ -63,7 +64,8 @@ void move_star(/* we don't pass the framebuffer */)
         if(tx < 0 || tx > ATTR_WIDTH -1
         || ty < 0 || ty > ATTR_HEIGHT -1)
         {
-            init_star(stars +i, i +1);
+            sys_log("star[%d]: @%.4d, %.4d exited the screen, re-init\n", i, tx, ty);
+            init_star(stars +i, i);
             continue;
         }
 
