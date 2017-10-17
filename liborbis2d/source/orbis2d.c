@@ -170,10 +170,13 @@ void orbis2dStartDrawing()
 
 void orbis2dDrawPixelColor(int x, int y, uint32_t pixelColor)
 {
-    int pixel = (y * orbconf->pitch) + x;
-    int color = pixelColor;
+    if((x > -1 && x < ATTR_WIDTH)
+    && (y > -1 && x < ATTR_HEIGHT))
+    {
+        int pixel = (y * orbconf->pitch) + x;
 
-    ((uint32_t *)orbconf->surfaceAddr[orbconf->currentBuffer])[pixel]=color;
+        ((uint32_t *)orbconf->surfaceAddr[orbconf->currentBuffer])[pixel] = pixelColor;
+    }
 }
 
 void orbis2dSetFontColor(uint32_t color) {
