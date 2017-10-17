@@ -118,6 +118,9 @@ int main(uint64_t stackbase, uint64_t othervalue)
 		if(ret == 1)
 		{
 			conf = orbis2dGetConf();
+			
+			orbis2dSetBackgroundColor(0x80380f4f);
+
 			while(flag)
 			{
 				//capture pad data and populate positions
@@ -129,8 +132,6 @@ int main(uint64_t stackbase, uint64_t othervalue)
 				
 				//wait for current display buffer
 				orbis2dStartDrawing();
-
-orbis2dSetBackgroundColor(0x80380f4f);
 
 				//clear with background (default white) to the current display buffer 
 				orbis2dClearBuffer();
