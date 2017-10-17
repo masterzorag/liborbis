@@ -135,7 +135,7 @@ int orbis2dWaitFlipArg(SceKernelEqueue *flipQueue)
 			ret=sceKernelWaitEqueue(*flipQueue, &event, 1, &event_out, 0);
 			if(ret>=0)
 			{
-				sys_log("liborbis2d sceKernelWaitEqueue return %d\n",ret);
+			//	sys_log("liborbis2d sceKernelWaitEqueue return %d\n",ret);
 				
 			}
 			else
@@ -160,6 +160,10 @@ void orbis2dFinishDrawing(int64_t flipArg)
     // request flip to the buffer
     int ret = sceVideoOutSubmitFlip(orbconf->videoHandle, orbconf->currentBuffer, orbconf->flipMode, flipArg);
 
+    if(ret)
+    {
+          sys_log("liborbis2d sceVideoOutSubmitFlip return error 0x%8x\n",ret);
+    }
     orbconf->flipArgLog[orbconf->currentBuffer]=flipArg;
 }
 
