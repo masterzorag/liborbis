@@ -14,7 +14,7 @@
 /* note that the code has not been fully optimized */
 
 #include <stdio.h>
-#include <stdlib.h>   // RAND_MAX
+#include <stdlib.h>   // random(), RAND_MAX
 #include <orbis2d.h>  // orbis2dDrawPixelColor()
 #include <logdebug.h> // sys_log()
 
@@ -25,14 +25,14 @@ static STAR stars[NUMBER_OF_STARS];
 void init_Star(STAR *star, const uint16_t i)
 {
     /* randomly init stars, generate them around the center of the screen */
-    star->xpos =  -10.0 + (20.0 * (arc4random()/(RAND_MAX+1.0)));
-    star->ypos =  -10.0 + (20.0 * (arc4random()/(RAND_MAX+1.0)));
+    star->xpos =  -10.0 + (20.0 * (random()/(RAND_MAX+1.0)));
+    star->ypos =  -10.0 + (20.0 * (random()/(RAND_MAX+1.0)));
 
     /* change viewpoint */
     star->xpos *= 3072.0;
     star->ypos *= 3072.0;
     star->zpos =  i;
-    star->speed = 1 + (int)(2.0 * (arc4random()/(RAND_MAX+1.0)));
+    star->speed = 1 + (int)(2.0 * (random()/(RAND_MAX+1.0)));
 
     star->color = i >> 2; /*the closer to the viewer the brighter*/
 }
