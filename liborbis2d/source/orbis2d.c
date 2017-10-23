@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <sys/param.h>
 #include <kernel.h>
-#include <types/event.h>
+#include <sys/event.h>
 
 
 #include <gnmdriver.h>
