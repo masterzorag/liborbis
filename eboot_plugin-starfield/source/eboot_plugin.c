@@ -22,8 +22,8 @@ int R,G,B;
 uint32_t color=0x80ff0000;
 int flag=0;
 
-Orbis2dConfig *conf;
-OrbisPadConfig *confPad;
+Orbis2dConfig *conf = NULL;
+OrbisPadConfig *confPad = NULL;
 
 
 void updateController()
