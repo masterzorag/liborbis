@@ -56,8 +56,8 @@ void draw_Starfield(/* we don't pass the framebuffer */)
         if(stars[i].zpos <= 0) init_Star(stars +i, i +1);
 
         /* compute 3D position */
-        tx = (stars[i].xpos / stars[i].zpos) + (640);
-        ty = (stars[i].ypos / stars[i].zpos) + (360);
+        tx = (stars[i].xpos / stars[i].zpos) + (ATTR_WIDTH  >>1);
+        ty = (stars[i].ypos / stars[i].zpos) + (ATTR_HEIGHT >>1);
 
         /* check if a star leaves the screen */
         if(tx < 0 || tx > ATTR_WIDTH -1
