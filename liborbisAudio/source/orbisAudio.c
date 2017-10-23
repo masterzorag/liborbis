@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <kernel.h>
-#include <audioout.h>
+//#include <audioout.h>
 #include "orbisAudio.h"
 #include "logdebug.h"
 
