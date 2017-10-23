@@ -63,13 +63,13 @@ void draw_Starfield(/* we don't pass the framebuffer */)
         if(tx < 0 || tx > ATTR_WIDTH -1
         || ty < 0 || ty > ATTR_HEIGHT -1)
         {
-            sys_log("star[%d]: @%.4d, %.4d exited the screen, re-init\n", i, tx, ty);
+            //sys_log("star[%d]: @%.4d, %.4d exited the screen, re-init\n", i, tx, ty);
             init_Star(stars +i, i);
             continue;
         }
 
         /* draw to screen via liborbis2d */
-        orbis2dDrawPixelColor(tx, ty, 0x80FFFFFF);
+        orbis2dDrawPixelColor(tx, ty, 0x80FF0000);
         
         //sys_log("star[%d]: %.4d, %.4d\n", i, tx, ty);
     }
