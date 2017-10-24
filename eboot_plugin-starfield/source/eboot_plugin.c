@@ -6,6 +6,7 @@
 #include <logdebug.h>
 #include <orbis2d.h>
 #include <orbisPad.h>
+#include <orbisXbmFont.h>
 
 #include "starfield.h"
 
@@ -227,10 +228,21 @@ void initApp()
 	}
 	
 }
+
+
+
 int main(uint64_t stackbase, uint64_t othervalue) 
 {
 	initApp();
 	init_Starfield();
+	uint32_t f1 = 0x800000AA,
+	         f2 = 0x80FF0066;
+
+	update_gradient(&f1, &f2);  // init font palette
+	char tmp_ln[64];
+	sprintf(tmp_ln, "*Hella ZeraTron*");
+	int tx = get_aligned_x(tmp_ln, CENTER);
+
 	/*
 	Mod_Init(0);
 	Mod_Load("host0:zweifeld.mod");
@@ -254,10 +266,13 @@ int main(uint64_t stackbase, uint64_t othervalue)
 		orbis2dClearBuffer();
 
 		// draw stars
-		draw_Starfield();	
+		draw_Starfield();
 
-		//default red is here press X to random color
+		// default red is here press X to random color
 		orbis2dDrawRectColor(x,w,y,h,color);
+
+		// draw text with Xbm_Font
+		print_text(tx, 400, tmp_ln);
 
 		//flush and flip
 		orbis2dFinishDrawing(flipArg);
