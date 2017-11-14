@@ -8,7 +8,8 @@
 #include <orbisPad.h>
 #include <orbisXbmFont.h>
 
-//#include "twister.h"
+
+#include "twist.h"
 
 
 int x = 1280 /2;
@@ -224,13 +225,13 @@ void initApp()
 int main(uint64_t stackbase, uint64_t othervalue) 
 {
     initApp();
-    //init_Twister();
+    init_Twister();
 
     uint32_t f1 = 0x800000AA,
              f2 = 0x80FF0066;
     update_gradient(&f1, &f2);  // init font palette
     char tmp_ln[64];
-    sprintf(tmp_ln, "A Raster Twister Demo will be drawn here");
+    sprintf(tmp_ln, "A Raster Twister Demo is drawn here");
     int tx = get_aligned_x(tmp_ln, CENTER);
 
     /*
@@ -258,7 +259,7 @@ int main(uint64_t stackbase, uint64_t othervalue)
         orbis2dClearBuffer();
 
         // draw twister
-        //draw_Twister();
+        draw_Twister();
 
         // default red is here press X to random color
         orbis2dDrawRectColor(x,w,y,h,color);
