@@ -33,7 +33,7 @@ static uint32_t face_A = 0xFF111199;      // default colors
 static uint32_t face_B = 0xFFd4af37;
 
 static int frames = 0;                    // keep track of frames
-float amps[WAVECOUNT], freqs[WAVECOUNT];  // precompute
+static float amps[WAVECOUNT], freqs[WAVECOUNT];  // precompute
 
 
 void update_twist_color(uint32_t *a, uint32_t *b)
