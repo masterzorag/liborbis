@@ -18,7 +18,7 @@ target ?= ps4_elf
 
 ###################################
 
-Libraries := -lorbis2d -lorbisPad -lorbisXmbFont -lSceNet_stub -lSceVideoOut_stub -lSceSystemService_stub -lSceUserService_stub -lSceGnmDriver_stub -lScePad_stub
+Libraries := -lorbis2d -lorbisPad -lorbisXbmFont -lSceNet_stub -lSceVideoOut_stub -lSceSystemService_stub -lSceUserService_stub -lSceGnmDriver_stub -lScePad_stub
 
 include $(Ps4Sdk)/make/ps4sdk.mk
 
